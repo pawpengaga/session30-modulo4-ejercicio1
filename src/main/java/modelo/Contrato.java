@@ -11,14 +11,14 @@ public class Contrato {
   // Todos los enum en java deben ser publicos para poder ser accesados directamente
   public enum tipoContrato {PROYECTO, INDEFINIDO, PLAZO};
 
-  private LocalDate fechaFinalizacion;
+  private int duracionContrato;
 
 
-  public Contrato(LocalDate fechaContratacion, int sueldo, String responsabilidad, LocalDate fechaFinalizacion) {
+  public Contrato(LocalDate fechaContratacion, int sueldo, String responsabilidad, int duracionContrato) {
     this.fechaContratacion = fechaContratacion;
     this.sueldo = sueldo;
     this.responsabilidad = responsabilidad;
-    this.fechaFinalizacion = fechaFinalizacion;
+    this.duracionContrato = duracionContrato;
   }
 
 
@@ -46,14 +46,22 @@ public class Contrato {
     this.responsabilidad = responsabilidad;
   }
 
-  public LocalDate getFechaFinalizacion() {
-    return this.fechaFinalizacion;
+  public int getDuracionContrato() {
+    return this.duracionContrato;
   }
 
-  public void setFechaFinalizacion(LocalDate fechaFinalizacion) {
-    this.fechaFinalizacion = fechaFinalizacion;
+  public void setDuracionContrato(int duracionContrato) {
+    this.duracionContrato = duracionContrato;
   }
 
-
+  @Override
+  public String toString() {
+    return "{" +
+      " fechaContratacion='" + getFechaContratacion() + "'" +
+      ", sueldo='" + getSueldo() + "'" +
+      ", responsabilidad='" + getResponsabilidad() + "'" +
+      ", duracionContrato='" + getDuracionContrato() + "'" +
+      "}";
+  }
 
 }
