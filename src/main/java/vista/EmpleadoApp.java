@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import excepciones.DepartamentoConEmpleadosException;
+import excepciones.DepartamentoNoEncontradoException;
+import excepciones.DepartamentoYaExisteException;
+import excepciones.EmpleadoNoEncontradoException;
 import modelo.Contrato;
 import modelo.Departamento;
 import modelo.Empleado;
@@ -24,7 +28,7 @@ public class EmpleadoApp {
 
   private static Scanner myscan = new Scanner(System.in);
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws DepartamentoYaExisteException, DepartamentoNoEncontradoException, DepartamentoConEmpleadosException, EmpleadoNoEncontradoException {
 
     boolean salir = false;
 
@@ -73,7 +77,7 @@ public class EmpleadoApp {
       System.out.println("Error al generar archivo");
     }
   }
-  private static void eliminarEmpleados() {
+  private static void eliminarEmpleados() throws EmpleadoNoEncontradoException {
     System.out.println("Rut a eliminar");
     String rut = myscan.nextLine();
     empleadoService.eliminarEmpleado(rut);
@@ -81,7 +85,7 @@ public class EmpleadoApp {
   private static void listarEmpleados() {
     empleadoService.listarEmpleados().forEach(System.out::println);
   }
-  private static void crearEmpleado() {
+  private static void crearEmpleado() throws DepartamentoNoEncontradoException {
     System.out.println("Ingrese el RUT");
     String rut = myscan.nextLine();
     
@@ -156,7 +160,7 @@ public class EmpleadoApp {
     
 
   }
-  private static void crearDepartamento(){
+  private static void crearDepartamento() throws DepartamentoYaExisteException{
     System.out.println("Id del departamento");
     int id = myscan.nextInt();
     myscan.nextLine();
@@ -174,7 +178,7 @@ public class EmpleadoApp {
     departamentoService.listaDepartamentos().forEach(System.out::println); // ._.
   }
 
-  private static void eliminarDepartamentos(){
+  private static void eliminarDepartamentos() throws DepartamentoNoEncontradoException, DepartamentoConEmpleadosException{
     System.out.println("Id del departamento");
     int id = myscan.nextInt();
     myscan.nextLine();
