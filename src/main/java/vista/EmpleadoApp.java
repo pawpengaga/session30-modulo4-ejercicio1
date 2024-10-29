@@ -2,6 +2,9 @@ package vista;
 
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -11,6 +14,8 @@ import modelo.Empleado;
 import modelo.Contrato.tipoContrato;
 import servicios.DepartamentoService;
 import servicios.EmpleadoService;
+
+// Existe una clase llamada period para sacar la diferencia entre las fechas o_o
 
 public class EmpleadoApp {
   
@@ -39,6 +44,7 @@ public class EmpleadoApp {
 
       System.out.println("Ingrese una opcion");
       int opcion = myscan.nextInt();
+      myscan.nextLine();
 
       switch (opcion) {
         case 1 -> crearDepartamento();
@@ -48,17 +54,18 @@ public class EmpleadoApp {
         case 5 -> listarEmpleados();
         case 6 -> eliminarEmpleados();
         case 7 -> generarArchivo();
+        case 8 -> salir = true;
       }
     }
   }
   private static void generarArchivo() {
     try (FileWriter writter = new FileWriter("empleados.csv")) {
-      writter.append("Rut, Nombre, Departamento, Fecha Contratacion, Sueldo, Cargo");
+      writter.append("Rut, Nombre, Departamento, Fecha Contratacion, Sueldo, Cargo\n");
       for (Empleado empleado : empleadoService.listarEmpleados()) {
         writter.append(empleado.getRut() + ", ")
         .append(empleado.getNombre() + ", ")
         .append(empleado.getDepartamento().getNombre() + ", ")
-        .append(new SimpleDateFormat("dd/mm/yyyy").format(empleado.getContrato().getFechaContratacion()) + ", ")
+        .append(new SimpleDateFormat("dd-MM-yyyy").format(empleado.getContrato().getFechaContratacion()) + ", ")
         .append(empleado.getContrato().getSueldo() + ", ")
         .append(empleado.getContrato().getResponsabilidad() + "\n");
       }
@@ -72,7 +79,7 @@ public class EmpleadoApp {
     empleadoService.eliminarEmpleado(rut);
   }
   private static void listarEmpleados() {
-    empleadoService.listarEmpleados();
+    empleadoService.listarEmpleados().forEach(System.out::println);
   }
   private static void crearEmpleado() {
     System.out.println("Ingrese el RUT");
@@ -83,6 +90,7 @@ public class EmpleadoApp {
 
     System.out.println("Ingrese el ID del departamento");
     int id = myscan.nextInt();
+    myscan.nextLine();
 
     Departamento dpto = departamentoService.obtenenerDepartamento(id);
 
@@ -107,6 +115,7 @@ public class EmpleadoApp {
     System.out.println("3. A PLAZO");
 
     int tipo = myscan.nextInt();
+    myscan.nextLine();
     tipoContrato tt = null;
 
     if (tipo == 1){
@@ -124,10 +133,18 @@ public class EmpleadoApp {
     } else {
       System.out.println("Duraccion");
       duracion = myscan.nextInt();
+      myscan.nextLine();
     }
 
     try {
-      Date fecha = new SimpleDateFormat("dd/MM/yyyy").parse(fechaStr);
+      // LocalDate fechanueva = LocalDate.now();
+      // DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      // String fechaFormateada = fechanueva.format(formateador);
+      
+      Date fecha = new SimpleDateFormat("dd-MM-yyyy").parse(fechaStr);
+      // LocalDate fechaLocalDate = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      System.out.println(fecha);
+      System.out.println(fechaStr);
       Contrato contrato = new Contrato(fecha, sueldo, cargo, duracion, tt);
       Empleado empl = new Empleado(rut, nombre, dpto, contrato);
       empleadoService.crearEmpleado(empl);
@@ -154,7 +171,7 @@ public class EmpleadoApp {
   }
 
   private static void listarDepartamentos(){
-    departamentoService.listaDepartamentos();
+    departamentoService.listaDepartamentos().forEach(System.out::println); // ._.
   }
 
   private static void eliminarDepartamentos(){

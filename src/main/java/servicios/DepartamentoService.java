@@ -7,8 +7,6 @@ import java.util.Map;
 
 import interfaces.IDepartamento;
 import modelo.Departamento;
-import modelo.Empleado;
-
 public class DepartamentoService implements IDepartamento {
 
   private Map<Integer, Departamento> departamentos = new HashMap<>();

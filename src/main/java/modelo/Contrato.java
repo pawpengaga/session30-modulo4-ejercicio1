@@ -27,6 +27,7 @@ public class Contrato {
   }
 
 
+
   public Date getFechaContratacion() {
     return this.fechaContratacion;
   }
