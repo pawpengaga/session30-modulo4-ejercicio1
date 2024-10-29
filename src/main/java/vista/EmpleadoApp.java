@@ -1,8 +1,13 @@
 package vista;
 
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
+import modelo.Contrato;
 import modelo.Departamento;
+import modelo.Empleado;
 import modelo.Contrato.tipoContrato;
 import servicios.DepartamentoService;
 import servicios.EmpleadoService;
@@ -42,18 +47,32 @@ public class EmpleadoApp {
         case 4 -> crearEmpleado();
         case 5 -> listarEmpleados();
         case 6 -> eliminarEmpleados();
+        case 7 -> generarArchivo();
       }
     }
-
-
   }
-  private static Object eliminarEmpleados() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'eliminarEmpleados'");
+  private static void generarArchivo() {
+    try (FileWriter writter = new FileWriter("empleados.csv")) {
+      writter.append("Rut, Nombre, Departamento, Fecha Contratacion, Sueldo, Cargo");
+      for (Empleado empleado : empleadoService.listarEmpleados()) {
+        writter.append(empleado.getRut() + ", ")
+        .append(empleado.getNombre() + ", ")
+        .append(empleado.getDepartamento().getNombre() + ", ")
+        .append(new SimpleDateFormat("dd/mm/yyyy").format(empleado.getContrato().getFechaContratacion()) + ", ")
+        .append(empleado.getContrato().getSueldo() + ", ")
+        .append(empleado.getContrato().getResponsabilidad() + "\n");
+      }
+    } catch (Exception e) {
+      System.out.println("Error al generar archivo");
+    }
   }
-  private static Object listarEmpleados() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'listarEmpleados'");
+  private static void eliminarEmpleados() {
+    System.out.println("Rut a eliminar");
+    String rut = myscan.nextLine();
+    empleadoService.eliminarEmpleado(rut);
+  }
+  private static void listarEmpleados() {
+    empleadoService.listarEmpleados();
   }
   private static void crearEmpleado() {
     System.out.println("Ingrese el RUT");
@@ -88,7 +107,7 @@ public class EmpleadoApp {
     System.out.println("3. A PLAZO");
 
     int tipo = myscan.nextInt();
-    tipoContrato tt;
+    tipoContrato tt = null;
 
     if (tipo == 1){
       tt = tipoContrato.PROYECTO;
@@ -98,11 +117,22 @@ public class EmpleadoApp {
       tt = tipoContrato.PLAZO;
     }
 
+    int duracion;
+
     if (tt == tipoContrato.INDEFINIDO){
-      int duracion = 0;
+      duracion = 0;
     } else {
       System.out.println("Duraccion");
-      int duracion = myscan.nextInt();
+      duracion = myscan.nextInt();
+    }
+
+    try {
+      Date fecha = new SimpleDateFormat("dd/MM/yyyy").parse(fechaStr);
+      Contrato contrato = new Contrato(fecha, sueldo, cargo, duracion, tt);
+      Empleado empl = new Empleado(rut, nombre, dpto, contrato);
+      empleadoService.crearEmpleado(empl);
+    } catch (Exception e) {
+      System.err.println("Error en el formato de la fecha");
     }
 
     System.out.println("Duracion");

@@ -1,32 +1,37 @@
 package modelo;
 
 import java.time.LocalDate;
+// import java.util.Date;
+import java.util.Date;
 
 public class Contrato {
 
-  private LocalDate fechaContratacion;
+  private Date fechaContratacion;
   private int sueldo;
   private String responsabilidad;
 
   // Todos los enum en java deben ser publicos para poder ser accesados directamente
   public enum tipoContrato {PROYECTO, INDEFINIDO, PLAZO};
 
+  tipoContrato tipo;
+
   private int duracionContrato;
 
 
-  public Contrato(LocalDate fechaContratacion, int sueldo, String responsabilidad, int duracionContrato) {
-    this.fechaContratacion = fechaContratacion;
+  public Contrato(Date fecha, int sueldo, String responsabilidad, int duracionContrato, tipoContrato tipo) {
+    this.fechaContratacion = fecha;
     this.sueldo = sueldo;
     this.responsabilidad = responsabilidad;
     this.duracionContrato = duracionContrato;
+    this.tipo = tipo;
   }
 
 
-  public LocalDate getFechaContratacion() {
+  public Date getFechaContratacion() {
     return this.fechaContratacion;
   }
 
-  public void setFechaContratacion(LocalDate fechaContratacion) {
+  public void setFechaContratacion(Date fechaContratacion) {
     this.fechaContratacion = fechaContratacion;
   }
 
