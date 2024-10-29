@@ -12,6 +12,7 @@ import excepciones.DepartamentoConEmpleadosException;
 import excepciones.DepartamentoNoEncontradoException;
 import excepciones.DepartamentoYaExisteException;
 import excepciones.EmpleadoNoEncontradoException;
+import excepciones.GenerarArchivoException;
 import modelo.Contrato;
 import modelo.Departamento;
 import modelo.Empleado;
@@ -28,7 +29,7 @@ public class EmpleadoApp {
 
   private static Scanner myscan = new Scanner(System.in);
 
-  public static void main(String[] args) throws DepartamentoYaExisteException, DepartamentoNoEncontradoException, DepartamentoConEmpleadosException, EmpleadoNoEncontradoException {
+  public static void main(String[] args) throws DepartamentoYaExisteException, DepartamentoNoEncontradoException, DepartamentoConEmpleadosException, EmpleadoNoEncontradoException, GenerarArchivoException {
 
     boolean salir = false;
 
@@ -58,11 +59,11 @@ public class EmpleadoApp {
         case 5 -> listarEmpleados();
         case 6 -> eliminarEmpleados();
         case 7 -> generarArchivo();
-        case 8 -> salir = true;
+        case 8 -> { System.out.println("Saliendo..."); salir = true; }
       }
     }
   }
-  private static void generarArchivo() {
+  private static void generarArchivo() throws GenerarArchivoException {
     try (FileWriter writter = new FileWriter("empleados.csv")) {
       writter.append("Rut, Nombre, Departamento, Fecha Contratacion, Sueldo, Cargo\n");
       for (Empleado empleado : empleadoService.listarEmpleados()) {
@@ -74,7 +75,7 @@ public class EmpleadoApp {
         .append(empleado.getContrato().getResponsabilidad() + "\n");
       }
     } catch (Exception e) {
-      System.out.println("Error al generar archivo");
+      throw new GenerarArchivoException("Hubo un error al generar el archivo...");
     }
   }
   private static void eliminarEmpleados() throws EmpleadoNoEncontradoException {
