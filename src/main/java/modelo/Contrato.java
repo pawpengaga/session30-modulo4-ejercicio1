@@ -1,6 +1,5 @@
 package modelo;
 
-import java.time.LocalDate;
 // import java.util.Date;
 import java.util.Date;
 
@@ -62,6 +61,10 @@ public class Contrato {
 
   @Override
   public String toString() {
+    // LocalDate fechanueva = LocalDate.now();
+    // DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // String fechaFormateada = fechanueva.format(formateador);
+
     return "{" +
       " fechaContratacion='" + getFechaContratacion() + "'" +
       ", sueldo='" + getSueldo() + "'" +
